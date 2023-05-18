@@ -1,5 +1,4 @@
 const stepSize = 2
-const enemies = [];
      
 class Player {
     
@@ -8,7 +7,7 @@ class Player {
         this.height = 15;
         this.positionX = 50 - this.width / 2;
         this.positionY = 0;
-        this.createDomElement();
+        this.playerElm = this.createDomElement();
         this.move();
     }
 
@@ -28,8 +27,7 @@ class Player {
         const parentElm = document.getElementById("board");
         parentElm.appendChild(playerElm);
 
-        this.playerElm = playerElm;
-
+        return playerElm;
     }
 
     move() {
@@ -38,13 +36,13 @@ class Player {
 
     moveLeft() {
         this.positionX = Math.max(0, this.positionX - stepSize);
-        console.log("Move left", this.positionX);
+        // console.log("Move left", this.positionX);
         this.move();
     }
 
     moveRight() {
         this.positionX = Math.min(100 - this.width, this.positionX + stepSize);
-        console.log("Move right", this.positionX);
+        // console.log("Move right", this.positionX);
         this.move();
     }
 
@@ -68,7 +66,6 @@ class Enemy {
     constructor() {
         this.enemyElm = this.createDomElement();
         this.positionX = Math.floor(Math.random() * 80) + 10;
-        // console.log("e x:", this.positionX);
         this.positionY = 2;
         this.fall();
     }
@@ -123,41 +120,52 @@ class Enemy {
     }
 }
 
+class Game {
+    constructor() {
+        this.player = new Player();
+        this.enemies = [];
 
-const player = new Player();
+        document.addEventListener("keydown", (e) => {
+            if(e.code === "ArrowLeft") {
+                this.player.moveLeft();
+            }
+        
+            if(e.code === "ArrowRight") {
+                this.player.moveRight();
+            }
+        })
 
-document.addEventListener("keydown", (e) => {
-    if(e.code === "ArrowLeft") {
-        player.moveLeft();
+        this.counter = 0;
+        this.moveEnemieIntervaleId = setInterval(() => {
+            this.moveEnemies();
+            this.counter++;
+            if (this.counter === 7)  {
+                this.createEnemy();
+                this.counter = 0;
+            }
+        }, 200);
     }
-
-    if(e.code === "ArrowRight") {
-        player.moveRight();
+    
+    createEnemy() {
+        this.enemies.push(new Enemy())
     }
-})
-
-function moveEnemies() {
-    for (let i = 0; i < enemies.length; i++) {
-        const enemy = enemies[i];
-        enemy.fall();
-        const playerPosition = player.getPlayerPosition();
-        if (enemy.hasCollided(playerPosition)) {
-            clearInterval(moveEnemieIntervaleId);
-            clearInterval(createEnemyIntervaleId);
-            window.location.href = "https://giphy.com/search/you-lose";
-        }
-        if (enemy.isOffScreen()) {
-            enemy.removeFromBoard();
-            enemies.splice(i, 1);
+    
+    moveEnemies() {
+        for (let i = 0; i < this.enemies.length; i++) {
+            const enemy = this.enemies[i];
+            enemy.fall();
+            const playerPosition = this.player.getPlayerPosition();
+            if (enemy.hasCollided(playerPosition)) {
+                clearInterval(this.moveEnemieIntervaleId);
+                // clearInterval(createEnemyIntervaleId);
+                window.location.href = "https://giphy.com/search/you-lose";
+            }
+            if (enemy.isOffScreen()) {
+                enemy.removeFromBoard();
+                this.enemies.splice(i, 1);
+            }
         }
     }
 }
 
-function createEnemy() {
-    enemies.push(new Enemy())
-}
-
-// createEnemy();
-const moveEnemieIntervaleId = setInterval(moveEnemies, 200)
-const createEnemyIntervaleId = setInterval(createEnemy, 1500)
-// setTimeout(createEnemy, 1000)
+const game = new Game();
