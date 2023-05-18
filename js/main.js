@@ -144,7 +144,7 @@ function moveEnemies() {
         if (enemy.hasCollided(playerPosition)) {
             clearInterval(moveEnemieIntervaleId);
             clearInterval(createEnemyIntervaleId);
-            window.location.href = "https://giphy.com/search/you-loose";
+            window.location.href = "https://giphy.com/search/you-lose";
         }
         if (enemy.isOffScreen()) {
             enemy.removeFromBoard();
