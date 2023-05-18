@@ -59,9 +59,9 @@ const enemyType = [
     "../images/css.png",
     "../images/banana.png",
     "../images/luis_book.png",
-    "../images/qualified.svg",
-    // "https://www.clipartmax.com/png/small/451-4519843_gin-tonic-free-icon-gin-tonic-symbol.png"
-    "./images/gin_tonic.png"
+    "../images/qualified.png",
+    "./images/gin_tonic.png",
+    "./images/react.png"
 ]
 
 class Enemy {
