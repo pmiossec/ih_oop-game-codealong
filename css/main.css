@@ -1,3 +1,24 @@
 body {
-    background-color: #ffe09c;
+    background-color: #bdcbf0;
+    margin: 0;
+    padding: 0;
+}
+
+#board {
+    background-color: cornflowerblue;
+    height: 100vh;
+    position: relative;
+}
+
+#player {
+    /* background-image: url("../images/ironhack.png"); */
+    background-color: rgb(0, 255, 76);
+    /* width: 50px;
+    height: 50px; */
+    position: absolute;
+}
+
+#player img{
+    width:100%;
+}
 }
