@@ -21,4 +21,15 @@ body {
 #player img{
     width:100%;
 }
+
+.enemy {
+    background-color: aqua;
+    background-image: url();
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
+
+.enemy img{
+    height: 100px;
 }
