@@ -32,10 +32,6 @@ class Player {
 
     }
 
-    doGreatStuff() {
-        console.log("I do great stuff because I'm a great player");
-    }
-
     move() {
         this.playerElm.style.left = `${this.positionX}vw`;
     }
@@ -51,20 +47,28 @@ class Player {
         console.log("Move right", this.positionX);
         this.move();
     }
+
+    getPlayerPosition() {
+        return this.playerElm.getBoundingClientRect();
+    }
 }
 
 const enemyType = [
-    "https://www.clipartmax.com/png/small/4-46495_free-clipart-of-a-banana-cute-banana-drawing.png",
+    "../images/html.png",
+    "../images/js.png",
+    "../images/css.png",
+    "../images/banana.png",
     "../images/luis_book.png",
-    "../images/qualified.png",
-    "https://www.clipartmax.com/png/small/451-4519843_gin-tonic-free-icon-gin-tonic-symbol.png"
+    "../images/qualified.svg",
+    // "https://www.clipartmax.com/png/small/451-4519843_gin-tonic-free-icon-gin-tonic-symbol.png"
+    "./images/gin_tonic.png"
 ]
 
 class Enemy {
     constructor() {
         this.enemyElm = this.createDomElement();
         this.positionX = Math.floor(Math.random() * 80) + 10;
-        console.log("e x:", this.positionX);
+        // console.log("e x:", this.positionX);
         this.positionY = 2;
         this.fall();
     }
@@ -80,7 +84,7 @@ class Enemy {
         enemyElm.style.left = `${this.positionX}vw`;
         enemyElm.style.top = `${this.positionY}vh`;
         // player
-        enemyElm.innerHTML = `<img src="${urlImage}" alt="ironhack">`;
+        enemyElm.innerHTML = `<center><img src="${urlImage}" alt="ironhack"></center>`;
 
         //step3: append to the dom: `parentElm.appendChild()`
         const parentElm = document.getElementById("board");
@@ -94,7 +98,7 @@ class Enemy {
         this.positionY = Math.min(100, this.positionY + stepSize);
         this.enemyElm.style.left = `${this.positionX}vw`;
         this.enemyElm.style.top = `${this.positionY}vh`;
-        console.log("enemy y:", this.positionY)
+        // console.log("enemy y:", this.positionY)
     }
 
     isOffScreen() {
@@ -105,11 +109,22 @@ class Enemy {
         console.log("remove from parent: ", this.enemyElm.parentNode);
         this.enemyElm.parentNode.removeChild(this.enemyElm);
     }
+
+    hasCollided(playerPosition) {
+        const enemyRect = this.enemyElm.getBoundingClientRect();
+        // console.log("positions", playerPosition, enemyRect);
+        if(enemyRect.bottom > playerPosition.top 
+            && enemyRect.right > playerPosition.left 
+            && enemyRect.top < playerPosition.bottom 
+            && enemyRect.left < playerPosition.right) {
+                return true;
+            }
+        return false;
+    }
 }
 
 
 const player = new Player();
-player.doGreatStuff();
 
 document.addEventListener("keydown", (e) => {
     if(e.code === "ArrowLeft") {
@@ -125,6 +140,12 @@ function moveEnemies() {
     for (let i = 0; i < enemies.length; i++) {
         const enemy = enemies[i];
         enemy.fall();
+        const playerPosition = player.getPlayerPosition();
+        if (enemy.hasCollided(playerPosition)) {
+            clearInterval(moveEnemieIntervaleId);
+            clearInterval(createEnemyIntervaleId);
+            window.location.href = "https://giphy.com/search/you-loose";
+        }
         if (enemy.isOffScreen()) {
             enemy.removeFromBoard();
             enemies.splice(i, 1);
@@ -135,7 +156,8 @@ function moveEnemies() {
 function createEnemy() {
     enemies.push(new Enemy())
 }
-createEnemy();
-setInterval(moveEnemies, 200)
-setInterval(createEnemy, 1000)
+
+// createEnemy();
+const moveEnemieIntervaleId = setInterval(moveEnemies, 200)
+const createEnemyIntervaleId = setInterval(createEnemy, 1500)
 // setTimeout(createEnemy, 1000)
