@@ -54,12 +54,12 @@ class Player {
 }
 
 const enemyType = [
-    "../images/html.png",
-    "../images/js.png",
-    "../images/css.png",
-    "../images/banana.png",
-    "../images/luis_book.png",
-    "../images/qualified.png",
+    "./images/html.png",
+    "./images/js.png",
+    "./images/css.png",
+    "./images/banana.png",
+    "./images/luis_book.png",
+    "./images/qualified.png",
     "./images/gin_tonic.png",
     "./images/react.png"
 ]
