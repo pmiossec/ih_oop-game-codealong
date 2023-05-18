@@ -139,11 +139,11 @@ class Game {
         this.moveEnemieIntervaleId = setInterval(() => {
             this.moveEnemies();
             this.counter++;
-            if (this.counter === 7)  {
+            if (this.counter === 15)  {
                 this.createEnemy();
                 this.counter = 0;
             }
-        }, 200);
+        }, 100);
     }
     
     createEnemy() {
