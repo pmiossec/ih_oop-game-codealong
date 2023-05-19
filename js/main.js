@@ -132,7 +132,7 @@ class Bullet {
         element.style.left = `${this.positionX}vw`;
         element.style.bottom = `${this.positionY}vh`;
         // player
-        element.innerHTML = `<center><img src="../images/bullet.png" alt="ironhack"></center>`;
+        element.innerHTML = `<center><img src="./images/bullet.png" alt="ironhack"></center>`;
 
         //step3: append to the dom: `parentElm.appendChild()`
         const parentElm = document.getElementById("board");
