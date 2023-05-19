@@ -126,10 +126,12 @@ class Game {
         this.addEventListeners();
 
         this.counter = 0;
+        this.difficultyCounter = 0;
+        this.difficultyEnemyCreationInterval = 15;
         this.moveEnemieIntervaleId = setInterval(() => {
             this.moveEnemies();
             this.counter++;
-            if (this.counter === 15)  {
+            if (this.counter > this.difficultyEnemyCreationInterval)  {
                 this.createEnemy();
                 this.counter = 0;
             }
@@ -166,6 +168,7 @@ class Game {
             const enemy = this.enemies[i];
             enemy.fall();
             const playerPosition = this.player.getPlayerPosition();
+
             if (enemy.hasCollided(playerPosition)) {
                 clearInterval(this.moveEnemieIntervaleId);
                 // clearInterval(createEnemyIntervaleId);
@@ -173,11 +176,19 @@ class Game {
                 window.location.href = window.location.href;
                 //window.location.href = "https://giphy.com/search/you-lose";
             }
+
             if (enemy.isOffScreen()) {
                 this.score+= enemy.enemyType.points;
                 this.pointsElement.innerText = this.score;
                 enemy.removeFromBoard();
                 this.enemies.splice(i, 1);
+                this.difficultyCounter++;
+                if(this.difficultyCounter === 5) {
+                    this.difficultyCounter = 0;
+                    this.difficultyEnemyCreationInterval
+                     = Math.max(5, this.difficultyEnemyCreationInterval - 1);
+                    console.log("Increase difficulty", this.difficultyEnemyCreationInterval);
+                }
             }
         }
     }
