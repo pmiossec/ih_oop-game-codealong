@@ -27,13 +27,13 @@ body {
     /* background-color: aqua; */
     background-image: url();
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 5vh;
+    height: 5vh;
     border: 2px solid white;
     border-radius: 5px;
 }
 
 .enemy img{
-    max-height: 100px;
-    max-width: 100px;
+    max-height: 5vh;
+    max-width: 5vh;
 }

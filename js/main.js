@@ -103,7 +103,7 @@ class Enemy {
     }
 
     removeFromBoard() {
-        console.log("remove from parent: ", this.enemyElm.parentNode);
+        // console.log("remove from parent: ", this.enemyElm.parentNode);
         this.enemyElm.parentNode.removeChild(this.enemyElm);
     }
 
