@@ -116,10 +116,63 @@ class Enemy {
     }
 }
 
+class Bullet {
+    constructor(positionX, positionY) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.element = this.createDomElement();
+    }
+
+    createDomElement() {
+        // step1: create the element
+        const element = document.createElement("div");
+
+        // step2: add content or modify (ex. innerHTML...)
+        element.classList.add("bullet");
+        element.style.left = `${this.positionX}vw`;
+        element.style.bottom = `${this.positionY}vh`;
+        // player
+        element.innerHTML = `<center><img src="../images/bullet.png" alt="ironhack"></center>`;
+
+        //step3: append to the dom: `parentElm.appendChild()`
+        const parentElm = document.getElementById("board");
+        parentElm.appendChild(element);
+
+        return element;
+    }
+
+    
+    move() {
+        this.positionY = Math.min(100, this.positionY + 2 * stepSize);
+        this.element.style.left = `${this.positionX}vw`;
+        this.element.style.bottom = `${this.positionY}vh`;
+    }
+
+    hitEnemy(enemyRect) {
+        const elementRect = this.element.getBoundingClientRect();
+        // console.log("positions", playerPosition, enemyRect);
+        return (elementRect.bottom > enemyRect.top 
+            && elementRect.right > enemyRect.left 
+            && elementRect.top < enemyRect.bottom 
+            && elementRect.left < enemyRect.right);
+    }
+
+    isOffScreen() {
+        // console.log("bullett off screen???", this.positionY, this.positionY >= 100);
+        return this.positionY >= 100;
+    }
+
+    removeFromBoard() {
+        // console.log("remove from parent: ", this.enemyElm.parentNode);
+        this.element.parentNode.removeChild(this.element);
+    }
+}
+
 class Game {
     constructor() {
         this.player = new Player();
         this.enemies = [];
+        this.bullets = [];
         this.score = 0;
 
         this.pointsElement = document.getElementById("points");
@@ -130,6 +183,7 @@ class Game {
         this.difficultyEnemyCreationInterval = 15;
         this.moveEnemieIntervaleId = setInterval(() => {
             this.moveEnemies();
+            this.moveBullets();
             this.counter++;
             if (this.counter > this.difficultyEnemyCreationInterval)  {
                 this.createEnemy();
@@ -148,6 +202,10 @@ class Game {
             if(e.code === "ArrowRight") {
                 this.player.moveRight();
             }
+        
+            if(e.code === "ArrowUp") {
+                this.fire();
+            }
         });
 
         document.getElementById("arrow-left").addEventListener("click", (e) => {
@@ -159,10 +217,61 @@ class Game {
         });
     }
 
+    fire() {
+        // console.log("fire", this.bullets)
+        if (this.bullets.length < 3) {
+            this.bullets.push(new Bullet(this.player.positionX + this.player.width / 2, this.player.positionY + 10));
+        }
+    }
+
+    moveBullets() {
+        for (let i = 0; i < this.bullets.length; i++) {
+            const bullet = this.bullets[i];
+            bullet.move();
+            if (bullet.isOffScreen()) {
+                // console.log("bullet offscreen...")
+                this.removeBullet(bullet);
+                continue;
+            }
+            
+            for (let j = 0; j < this.enemies.length; j++) {
+                const enemy = this.enemies[j];
+                if (bullet.hitEnemy(enemy.enemyElm.getBoundingClientRect())) {
+                    console.log("Hit!");
+                    this.removeEnemy(enemy, true);
+                    this.removeBullet(bullet);
+                }
+            }
+        }
+    }
+
     createEnemy() {
         this.enemies.push(new Enemy())
     }
-    
+
+    removeEnemy(enemy, shouldScore = false) {
+        if (shouldScore) {
+            this.score+= enemy.enemyType.points;
+            this.pointsElement.innerText = this.score;
+        }
+
+        enemy.removeFromBoard();
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        this.difficultyCounter++;
+        if(this.difficultyCounter === 5) {
+            this.difficultyCounter = 0;
+            this.difficultyEnemyCreationInterval
+             = Math.max(5, this.difficultyEnemyCreationInterval - 1);
+            console.log("Increase difficulty", this.difficultyEnemyCreationInterval);
+        }
+    }
+
+    removeBullet(bullet) {
+        bullet.removeFromBoard();
+        const iBulletToRemove =  this.bullets.indexOf(bullet);
+        this.bullets.splice(iBulletToRemove, 1);
+    }
+
     moveEnemies() {
         for (let i = 0; i < this.enemies.length; i++) {
             const enemy = this.enemies[i];
@@ -178,17 +287,7 @@ class Game {
             }
 
             if (enemy.isOffScreen()) {
-                this.score+= enemy.enemyType.points;
-                this.pointsElement.innerText = this.score;
-                enemy.removeFromBoard();
-                this.enemies.splice(i, 1);
-                this.difficultyCounter++;
-                if(this.difficultyCounter === 5) {
-                    this.difficultyCounter = 0;
-                    this.difficultyEnemyCreationInterval
-                     = Math.max(5, this.difficultyEnemyCreationInterval - 1);
-                    console.log("Increase difficulty", this.difficultyEnemyCreationInterval);
-                }
+                this.removeEnemy(enemy, false);
             }
         }
     }

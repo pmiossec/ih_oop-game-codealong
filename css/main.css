@@ -49,6 +49,15 @@ body {
     user-select: none;
 }
 
+.bullet {
+    position: absolute;
+    height: var(--enemy-size);
+}
+
+.bullet img{
+    height: var(--enemy-size);
+}
+
 #arrow-left {
     left: 3vw;
 }
