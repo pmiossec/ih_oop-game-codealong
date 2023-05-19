@@ -215,6 +215,10 @@ class Game {
         document.getElementById("arrow-right").addEventListener("click", (e) => {
             this.player.moveRight();
         });
+
+        document.getElementById("bullet-btn").addEventListener("click", (e) => {
+            this.fire();
+        });
     }
 
     fire() {
