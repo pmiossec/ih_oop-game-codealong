@@ -1,3 +1,7 @@
+:root {
+    --enemy-size: 8vh;
+  }
+  
 body {
     background-color: #bdcbf0;
     margin: 0;
@@ -27,15 +31,15 @@ body {
     /* background-color: aqua; */
     background-image: url();
     position: absolute;
-    width: 5vh;
-    height: 5vh;
+    width: var(--enemy-size);
+    height: var(--enemy-size);
     border: 2px solid white;
     border-radius: 5px;
 }
 
 .enemy img{
-    max-height: 5vh;
-    max-width: 5vh;
+    max-height: var(--enemy-size);
+    max-width: var(--enemy-size);
 }
 
 .arrow {
@@ -51,4 +55,10 @@ body {
 
 #arrow-right {
     left: 90vw;
+}
+
+#score {
+    position: fixed;
+    top: 2vh;
+    left: 2vh;
 }

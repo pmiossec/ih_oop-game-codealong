@@ -51,28 +51,27 @@ class Player {
     }
 }
 
-const enemyType = [
-    "./images/html.png",
-    "./images/js.png",
-    "./images/css.png",
-    "./images/banana.png",
-    "./images/luis_book.png",
-    "./images/qualified.png",
-    "./images/gin_tonic.png",
-    "./images/react.png"
-]
+const enemyTypes = [
+    { url: "./images/html.png", points: 10 },
+    { url: "./images/js.png", points: 3},
+    { url: "./images/css.png", points: 3},
+    { url: "./images/react.png", points: 3},
+    { url: "./images/banana.png", points: 5},
+    { url: "./images/luis_book.png", points: 100},
+    { url: "./images/qualified.png", points: 10},
+    { url: "./images/gin_tonic.png", points: 2},
+];
 
 class Enemy {
     constructor() {
-        this.enemyElm = this.createDomElement();
+        this.enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+        this.enemyElm = this.createDomElement(this.enemyType.url);
         this.positionX = Math.floor(Math.random() * 80) + 10;
         this.positionY = 2;
         this.fall();
     }
 
-    createDomElement() {
-        let urlImage = enemyType[Math.floor(Math.random() * enemyType.length)];
-
+    createDomElement(imageUrl) {
         // step1: create the element
         const enemyElm = document.createElement("div");
 
@@ -81,7 +80,7 @@ class Enemy {
         enemyElm.style.left = `${this.positionX}vw`;
         enemyElm.style.top = `${this.positionY}vh`;
         // player
-        enemyElm.innerHTML = `<center><img src="${urlImage}" alt="ironhack"></center>`;
+        enemyElm.innerHTML = `<center><img src="${imageUrl}" alt="ironhack"></center>`;
 
         //step3: append to the dom: `parentElm.appendChild()`
         const parentElm = document.getElementById("board");
@@ -124,7 +123,9 @@ class Game {
     constructor() {
         this.player = new Player();
         this.enemies = [];
+        this.score = 0;
 
+        this.pointsElement = document.getElementById("points");
         this.addEventListeners();
 
         this.counter = 0;
@@ -174,6 +175,8 @@ class Game {
                 window.location.href = "https://giphy.com/search/you-lose";
             }
             if (enemy.isOffScreen()) {
+                this.score+= enemy.enemyType.points;
+                this.pointsElement.innerText = this.score;
                 enemy.removeFromBoard();
                 this.enemies.splice(i, 1);
             }
