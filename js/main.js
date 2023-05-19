@@ -297,4 +297,13 @@ class Game {
     }
 }
 
+
 const game = new Game();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(function() {
+        console.log('service worker registration complete')
+    }, function(e) {
+        console.log('service worker registration failure:', e)
+    })
+}

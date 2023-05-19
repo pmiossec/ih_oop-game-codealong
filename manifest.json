@@ -1,0 +1,16 @@
+{
+    "name": "IronHack Game",
+    "short_name": "ih_game",
+    "description": "My iron hack game",
+    "start_url": "./",
+    "lang": "en-EN",
+    "display": "fullscreen",
+    "theme_color": "cornflowerblue",
+    "background_color": "cornflowerblue",
+    "icons": [
+      {
+        "src": "./images/favicon.png",
+        "sizes": "48x48 64x64 72x72 96x96 128x128 256x256 512x512"
+      }
+    ]
+}
