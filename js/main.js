@@ -125,15 +125,7 @@ class Game {
         this.player = new Player();
         this.enemies = [];
 
-        document.addEventListener("keydown", (e) => {
-            if(e.code === "ArrowLeft") {
-                this.player.moveLeft();
-            }
-        
-            if(e.code === "ArrowRight") {
-                this.player.moveRight();
-            }
-        })
+        this.addEventListeners();
 
         this.counter = 0;
         this.moveEnemieIntervaleId = setInterval(() => {
@@ -146,6 +138,27 @@ class Game {
         }, 100);
     }
     
+    addEventListeners() {
+
+        document.addEventListener("keydown", (e) => {
+            if(e.code === "ArrowLeft") {
+                this.player.moveLeft();
+            }
+        
+            if(e.code === "ArrowRight") {
+                this.player.moveRight();
+            }
+        });
+
+        document.getElementById("arrow-left").addEventListener("click", (e) => {
+                this.player.moveLeft();
+            });
+        
+        document.getElementById("arrow-right").addEventListener("click", (e) => {
+            this.player.moveRight();
+        });
+    }
+
     createEnemy() {
         this.enemies.push(new Enemy())
     }

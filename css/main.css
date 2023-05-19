@@ -37,3 +37,18 @@ body {
     max-height: 5vh;
     max-width: 5vh;
 }
+
+.arrow {
+    position: fixed;
+    top: 90vh;
+    font-size: 4vh;
+    user-select: none;
+}
+
+#arrow-left {
+    left: 3vw;
+}
+
+#arrow-right {
+    left: 90vw;
+}
