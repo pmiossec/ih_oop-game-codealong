@@ -109,13 +109,10 @@ class Enemy {
     hasCollided(playerPosition) {
         const enemyRect = this.enemyElm.getBoundingClientRect();
         // console.log("positions", playerPosition, enemyRect);
-        if(enemyRect.bottom > playerPosition.top 
+        return (enemyRect.bottom > playerPosition.top 
             && enemyRect.right > playerPosition.left 
             && enemyRect.top < playerPosition.bottom 
-            && enemyRect.left < playerPosition.right) {
-                return true;
-            }
-        return false;
+            && enemyRect.left < playerPosition.right);
     }
 }
 
@@ -172,7 +169,9 @@ class Game {
             if (enemy.hasCollided(playerPosition)) {
                 clearInterval(this.moveEnemieIntervaleId);
                 // clearInterval(createEnemyIntervaleId);
-                window.location.href = "https://giphy.com/search/you-lose";
+                alert("Game over! 😮");
+                window.location.href = window.location.href;
+                //window.location.href = "https://giphy.com/search/you-lose";
             }
             if (enemy.isOffScreen()) {
                 this.score+= enemy.enemyType.points;

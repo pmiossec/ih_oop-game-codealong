@@ -61,4 +61,7 @@ body {
     position: fixed;
     top: 2vh;
     left: 2vh;
+    color: white;
+    font-size: 4vh;
+    font-weight: bold;
 }
