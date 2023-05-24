@@ -8,6 +8,10 @@ body {
     padding: 0;
 }
 
+* {
+    user-select: none;
+}
+
 #board {
     background-color: cornflowerblue;
     height: 100vh;

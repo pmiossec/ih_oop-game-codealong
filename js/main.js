@@ -203,7 +203,7 @@ class Game {
                 this.player.moveRight();
             }
         
-            if(e.code === "ArrowUp") {
+            if(e.code === "ArrowUp" || e.code === "Space") {
                 this.fire();
             }
         });
