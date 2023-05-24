@@ -21,5 +21,10 @@
     <div id="bullet-btn" class="arrow">🎆</div>
 
     <script src="./js/main.js"></script>
+    <script>
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.register('./sw.js', { scope: '/ih_oop-game-codealong/' })
+        }
+    </script>
 </body>
 </html>

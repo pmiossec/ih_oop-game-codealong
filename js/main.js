@@ -297,6 +297,13 @@ class Game {
     }
 }
 
+if ('ontouchstart' in document.documentElement) {
+    // show icon
+    console.log("Virtual keyboard. Need to display on screen arrows");
+}
+else {
+    console.log("Physical keyboard");
+}
 
 const game = new Game();
 
